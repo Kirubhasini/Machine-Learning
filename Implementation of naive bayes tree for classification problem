@@ -1,0 +1,16 @@
+import pandas as pd
+import sklearn
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import accuracy_score
+bank = pd.read_csv(r'C:\Users\muhil\.jupyter\banktrain.csv')
+bank
+X = bank[['CreditScore','Age','Balance','NumOfProducts','HasCrCard','IsActiveMember','EstimatedSalary']]
+Y = bank['Exited']
+X_train,X_test,Y_train,Y_test = train_test_split(X,Y,train_size=0.7,random_state=1)
+print(X_train)
+print(Y_train)
+gnb = GaussianNB()
+gnb.fit(X,Y)
+gnb_pred = gnb.predict(X_test)
+print('Accuracy of naive Bayes model:',accuracy_score(Y_test,gnb_pred))
