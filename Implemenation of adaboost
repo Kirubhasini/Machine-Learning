@@ -1,0 +1,17 @@
+import pandas as pd 
+import numpy as np 
+from sklearn.tree import DecisionTreeClassifier 
+from sklearn.neighbors import KNeighborsClassifier 
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split 
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score 
+from sklearn.ensemble import BaggingClassifier
+from sklearn.ensemble import AdaBoostClassifier
+df = pd.read_csv(r"C:\Users\muhil\.jupyter\processes2 (2).csv")
+df
+x = df.drop( ['name','year','fuel','seller_type','transmission','owner','Engine (CC)','Mileage Unit'],axis=1)
+y= df['Engine (CC)']
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+model = AdaBoostClassifier(random_state=1)
+model.fit(x_train, y_train)
+model.score(x_test,y_test) 
