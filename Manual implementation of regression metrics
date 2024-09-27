@@ -1,0 +1,65 @@
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.model_selection import train_test_split
+from math import fmod
+
+df=pd.read_csv(r"C:\Users\muhil\.jupyter\day.csv")
+df
+
+df = df.drop(['dteday'], axis=1)
+X = df.iloc[:,:-1]
+y = df.iloc[:,-1]
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.8, random_state=0)
+
+from sklearn.preprocessing import StandardScaler
+Scaler=StandardScaler()
+X_train = Scaler.fit_transform(X_train)
+X_test = Scaler.fit_transform(X_test)
+
+val = KNeighborsRegressor(n_neighbors=3)
+val.fit(X_train, y_train)
+y_pred = val.predict(X_test)
+
+sum1 = []
+for i, j in zip(y_pred, y_test):
+    y = i-j
+    if y<0:
+        y=-y
+    sum1.append(y)
+MAE = sum(sum1)/len(y_test)
+print('Obtained Mean Absolute Error:',MAE)
+print()
+
+sum2 = []
+for i, j in zip(y_pred, y_test):
+    y = (i-j)**2
+    sum1.append(y)
+MSE = sum(sum1)/len(y_test)
+print('Obtained Mean Squared Error:',MSE)
+print()
+
+RMSE = np.sqrt(MSE)
+print('Obtained Root Mean Squared Error:',RMSE)
+print()
+
+sum3=[]
+for i, j in zip(y_pred, y_test):
+    y = i-j
+    if y<0:
+        y=-y
+    y=y/j
+    sum3.append(y)
+MAPE = sum(sum3)*100/len(y_test)
+print('Obtained Mean Absolute Percentage Error:',MAPE)
+print()
+
+sum4 = []
+for i in y_pred:
+    y = (i-np.mean(y_test))**2
+    sum4.append(y)
+R2 = 1 - (sum(sum1)/sum(sum4))
+print('Obtained R2 Score:',R2)
+print()
