@@ -1,0 +1,38 @@
+import pandas as pd 
+import numpy as np 
+from sklearn.tree import DecisionTreeClassifier 
+from sklearn.neighbors import KNeighborsClassifier 
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split 
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score 
+import statistics as st
+df = pd.read_csv(r"C:\Users\muhil\.jupyter\creditcard.csv",nrows=2000)
+df
+X = df.iloc[:,:-1]
+y = df.iloc[:,-1]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+model1 = DecisionTreeClassifier() 
+model2 = KNeighborsClassifier() 
+model3= LogisticRegression()
+model1.fit(X_train,y_train) 
+model2.fit(X_train,y_train) 
+model3.fit(X_train,y_train) 
+pred1=model1.predict(X_test) 
+pred2=model2.predict(X_test) 
+pred3=model3.predict(X_test) 
+final_pred = np.array([]) 
+for i in range(0,len(X_test)):
+    final_pred = np.append(final_pred, st.mode([pred1[i], pred2[i], pred3[i]])) 
+print(final_pred)
+print("Accuracy DT:", accuracy_score(y_test, pred1)) 
+print("Accuracy KNN:", accuracy_score(y_test, pred2)) 
+print("Accuracy LR:", accuracy_score(y_test, pred3)) 
+print("Accuracy Ensamble Max voting:", accuracy_score(y_test, final_pred))
+
+ANOTHER METHOD
+from sklearn.ensemble import VotingClassifier
+model1 = DecisionTreeClassifier() 
+model2 = KNeighborsClassifier() 
+model3= LogisticRegression() 
+model = VotingClassifier(estimators=[('dt', model1), ('knn', model2), ('lr', model3)]) 
+model.fit(X_train,y_train)
