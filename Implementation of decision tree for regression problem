@@ -1,0 +1,17 @@
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.metrics import r2_score, mean_squared_error
+df=pd.read_csv(r'C:\Users\muhil\.jupyter\Student_Performance_regression.csv')
+le=LabelEncoder()
+df['Extracurricular Activities']=le.fit_transform(df['Extracurricular Activities'])
+X=df.iloc[:,:-1]
+y=df.iloc[:,-1]
+X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=42)
+dt=DecisionTreeRegressor()
+dt.fit(X_train,y_train)
+dt_pred=dt.predict(X_test)
+print(f"r2 score: {r2_score(y_test,dt_pred)}")
+print("mean squared error:",mean_squared_error(y_test,dt_pred))
