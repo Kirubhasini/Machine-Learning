@@ -1,0 +1,69 @@
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib
+import matplotlib.pyplot as plt
+%matplotlib inline
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score
+from sklearn import datasets
+from sklearn import svm
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB
+
+TESTING AND TRAINING
+iris = datasets.load_iris()
+X = iris.data
+Y = iris.target
+X_train, X_test, Y_train, Y_test = train_test_split(X,Y,test_size=0.2,random_state=1)
+print("X_train:",X_train.shape)
+print("X_test:",X_test.shape)
+print("Y_train:",Y_train.shape)
+print("Y_test:",Y_test.shape)
+
+SUPPORT VECTOR MACHINE
+svm_clf = svm.SVC(kernel='linear')
+
+# model training
+svm_clf.fit(X_train,Y_train)
+
+# model predictions
+svm_clf_pred = svm_clf.predict(X_test)
+
+print("Obtained classification results while testing:",svm_clf_pred)
+print("Actual classificarion results:",Y_test)
+
+ACCURACY CHECKING
+# Accuracy score
+print("Accuracy of support vector machine:",accuracy_score(Y_test,svm_clf_pred))
+
+# Other performance metrics
+print("Precision of svm:",precision_score(Y_test,svm_clf_pred,average='weighted'))
+print("Recall of svm:",recall_score(Y_test,svm_clf_pred,average='weighted'))
+print("f1-score of svm:",f1_score(Y_test,svm_clf_pred,average='weighted'))
+
+GAUSSIAN NAIVE BAYES
+gnb =  GaussianNB()
+#training the model 
+gnb.fit(X_train,Y_train)
+#make predictions
+gnb_pred = gnb.predict(X_test)
+#print the accuracy 
+print("accuracy of gaussian Naive Bayes",accuracy_score(Y_test,gnb_pred))
+#print other performance metrics 
+print("Precision of svm:",precision_score(Y_test,gnb_pred,average='weighted'))
+print("Recall of svm:",recall_score(Y_test,gnb_pred,average='weighted'))
+print("f1-score of svm:",f1_score(Y_test,gnb_pred,average='weighted'))
+
+DECISION TREE
+dt = DecisionTreeClassifier(random_state=0,max_depth=7)
+# model training
+dt.fit(X_train,Y_train)
+dt_pred=dt.predict(X_test)
+print("accuracy of decision tree:",accuracy_score(Y_test,dt_pred))
+print("Precision of decision tree:",precision_score(Y_test,dt_pred,average='weighted'))
+print("Recall of decision tree:",recall_score(Y_test,dt_pred,average='weighted'))
+print("f1-score of decision tree:",f1_score(Y_test,dt_pred,average='weighted'))
+print("Accuracy of support vector machine:",accuracy_score(Y_test,svm_clf_pred))
+print("Accuracy of Naive Bayes:",accuracy_score(Y_test,gnb_pred))
+print("Accuracy of Decision Tree Classifier:",accuracy_score(Y_test,dt_pred))
