@@ -1,0 +1,17 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import BaggingClassifier
+from sklearn.metrics import accuracy_score
+df = pd.read_csv(r"C:\Users\muhil\.jupyter\processes2 (2).csv")
+df
+x = df.drop( ['name','year','fuel','seller_type','transmission','owner','Engine (CC)','Mileage Unit'],axis=1)
+y= df['Engine (CC)']
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+n_estimators = 100
+base_classifier = DecisionTreeClassifier()
+bagging_classifier = BaggingClassifier(n_estimators=100)
+bagging_classifier.fit(x_train, y_train)
+y_pred = bagging_classifier.predict(x_test)
+accuracy = accuracy_score(y_test, y_pred)
+print("Accuracy:", accuracy)
