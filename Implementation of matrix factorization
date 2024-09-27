@@ -1,0 +1,26 @@
+import numpy as np 
+import math 
+import sklearn.metrics 
+def matrix_factorization(R, P, Q, K, steps=5000, alpha=0.0001 ): 
+ Q = Q.T 
+ for step in range(steps): 
+     for i in range(len(R)): 
+        for j in range(len(R[i])): 
+           if R[i][j] > 0: 
+                eij = R[i][j] - np.dot(P[i,:],Q[:,j]) 
+                for k in range(K): 
+                    P[i][k] = P[i][k] + alpha * 2 * eij * Q[k][j] 
+                    Q[k][j] = Q[k][j] + alpha * 2 * eij * P[i][k] 
+                    return P, Q.T 
+R = [[0,5,4,2, 1],[1,0,0,5, 3], [1,4,4,1, 0],[0,0,2, 0, 2],[3,1,1,0, 0] ] 
+R = np.array(R) 
+N = len(R) 
+# M: num of Movie 
+M = len(R[0]) 
+# Num of Features 
+K = 1 
+P = np.random.rand(N,K) 
+Q = np.random.rand(M,K) 
+nP, nQ = matrix_factorization(R, P, Q, K) 
+nR = np.dot(nP, nQ.T) 
+print(nR) 
