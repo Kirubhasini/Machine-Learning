@@ -1,0 +1,21 @@
+import pandas as pd
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.model_selection import train_test_split 
+from sklearn.metrics import r2_score
+from sklearn.preprocessing import StandardScaler
+df = pd.read_csv(r"C:\Users\muhil\.jupyter\day.csv")
+df
+X = df.drop(['cnt','dteday'],axis=1)
+Y = df['cnt']
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=.20, random_state=0)
+print("X train input:", X_train.shape) 
+print("Y Train input:", Y_train.shape) 
+print("X Test input", X_test.shape) 
+print("Y Test input", Y_test.shape) 
+Scaler= StandardScaler() 
+X_train=Scaler.fit_transform(X_train) 
+X_test=Scaler.fit_transform(X_test)
+KNN = KNeighborsRegressor(n_neighbors=3) 
+KNN.fit(X_train,Y_train) 
+predict = KNN.predict(X_test)  
+print("R2 Score:", r2_score(Y_test,predict))
