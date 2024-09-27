@@ -1,0 +1,27 @@
+import pandas as pd 
+import numpy as np 
+from sklearn.tree import DecisionTreeClassifier 
+from sklearn.neighbors import KNeighborsClassifier 
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split 
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score 
+import statistics as st 
+df = pd.read_csv(r"C:\Users\muhil\.jupyter\creditcard.csv",nrows=2000)
+df
+x = df.iloc[:,:-1]
+y = df.iloc[:,-1]
+model1 = DecisionTreeClassifier() 
+model2 = KNeighborsClassifier() 
+model3= LogisticRegression() 
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.2, random_state=0)
+model1.fit(x_train,y_train) 
+model2.fit(x_train,y_train) 
+model3.fit(x_train,y_train) 
+pred1=model1.predict_proba(x_test) 
+pred2=model2.predict_proba(x_test)
+pred3=model3.predict_proba(x_test)
+finalpred=(pred1+pred2+pred3)/3 
+print(finalpred) 
+model1 =DecisionTreeClassifier() 
+model2 = KNeighborsClassifier() 
+model3= LogisticRegression()
