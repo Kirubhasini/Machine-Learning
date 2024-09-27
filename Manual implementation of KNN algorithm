@@ -1,0 +1,31 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+knn = pd.read_csv(r"C:\Users\muhil\.jupyter\KNN.csv")
+knn
+x0 = int(input("Enter the value of x0: "))
+y0 = int(input("Enter the value of y0: "))
+k = int(input("Enter the value of k: "))
+euc_dis = []
+for row in range(len(knn)):
+    dis = (((x0-knn['BRIGHTNESS'][row])**2)+((y0-knn['SATURATION'][row])**2))**0.5
+    euc_dis.append(dis)
+knn['Euclidean Distance'] = euc_dis
+knn
+k_values = knn[:k]
+k_values
+print(max(k_values['CLASS']))
+red = knn[knn['CLASS']=='Red']
+red
+blue = knn[knn['CLASS']=='Blue']
+blue
+plt.scatter(red['BRIGHTNESS'], red['SATURATION'], color = 'red', label = 'Class Red')
+plt.scatter(blue['BRIGHTNESS'], blue['SATURATION'], color = 'blue', label = 'Class Blue')
+plt.scatter(x0, y0, color = 'GREEN', label = 'Data Point')
+plt.legend(bbox_to_anchor=(1.2,0.80))
+plt.title('Clustering')
+plt.scatter(red['BRIGHTNESS'], red['SATURATION'], color = 'red', label = 'Class Red')
+plt.scatter(blue['BRIGHTNESS'], blue['SATURATION'], color = 'blue', label = 'Class Blue')
+plt.scatter(x0, y0, color = 'green', label = 'Data Point')
+plt.legend(bbox_to_anchor=(1.2,0.80))
+plt.title('Clustering After')
