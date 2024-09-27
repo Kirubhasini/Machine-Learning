@@ -1,0 +1,50 @@
+import pandas as pd
+import numpy as np
+from scipy import stats
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score,precision_score,recall_score,f1_score
+from sklearn import datasets
+from sklearn import svm
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.ensemble import RandomForestClassifier
+df=pd.read_csv(r"C:\Users\muhil\.jupyter\Covid Data.csv")
+df
+df.describe()
+df.isnull().sum()
+df['SEX']=df['SEX'].replace({'Male':1,'Female':0})
+df['PATIENT_TYPE']=df['PATIENT_TYPE'].replace({'Returned Home':1,'Hosptilized':0})
+df['RESULTS']=df['RESULTS'].replace({'Positive':1,'Negative':0})
+x=df[['MEDICAL_UNIT', 'SEX', 'PATIENT_TYPE', 'PNEUMONIA', 'AGE', 'DIABETES',
+       'COPD', 'ASTHMA', 'INMSUPR', 'HIPERTENSION', 'OTHER_DISEASE',
+       'CARDIOVASCULAR', 'OBESITY', 'RENAL_CHRONIC', 'TOBACCO']]
+y=df['RESULTS']
+x_train,x_test,y_train,y_test = train_test_split(x,y,test_size=0.2,random_state=1)
+rf = RandomForestClassifier()
+rf.fit(x_train,y_train)
+rf_pred=rf.predict(x_test)
+print("Accuracy of random forest:",accuracy_score(y_test,rf_pred))
+print("Precision of random forest:",precision_score(y_test,rf_pred,average='weighted'))
+print("Recall of random forest:",recall_score(y_test,rf_pred,average='weighted'))
+print("f1-score of random forest:",f1_score(y_test,rf_pred,average='weighted'))
+svm_clf = svm.SVC(kernel='linear')
+svm_clf.fit(x_train,y_train)
+svm_clf_pred = svm_clf.predict(x_test)
+print("Accuracy of support vector machine:",accuracy_score(y_test,svm_clf_pred))
+print("Precision of svm:",precision_score(y_test,svm_clf_pred,average='weighted'))
+print("Recall of svm:",recall_score(y_test,svm_clf_pred,average='weighted'))
+print("f1-score of svm:",f1_score(y_test,svm_clf_pred,average='weighted'))
+gnb =  GaussianNB() 
+gnb.fit(x_train,y_train)
+gnb_pred = gnb.predict(x_test)
+print("accuracy of gaussian Naive Bayes",accuracy_score(y_test,gnb_pred))
+print("Precision of svm:",precision_score(y_test,gnb_pred,average='weighted'))
+print("Recall of svm:",recall_score(y_test,gnb_pred,average='weighted'))
+print("f1-score of svm:",f1_score(y_test,gnb_pred,average='weighted'))
+dt = DecisionTreeClassifier(random_state=0,max_depth=7)
+dt.fit(x_train,y_train)
+dt_pred=dt.predict(x_test)
+print("accuracy of decision tree:",accuracy_score(y_test,dt_pred))
+print("Precision of decision tree:",precision_score(y_test,dt_pred,average='weighted'))
+print("Recall of decision tree:",recall_score(y_test,dt_pred,average='weighted'))
+print("f1-score of decision tree:",f1_score(y_test,dt_pred,average='weighted'))
