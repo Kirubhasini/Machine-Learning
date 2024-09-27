@@ -1,0 +1,25 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+def estimate_coef(x, y):
+ n = np.size(x)
+ m_x = np.mean(x)
+ m_y = np.mean(y)
+ SS_xy = n*np.sum(y*x) -(np.sum(x)*np.sum(y))
+ SS_xx = n*np.sum(x*x) - (np.sum(x)*np.sum(x))
+ m = SS_xy / SS_xx
+ c = (np.sum(y) - m*np.sum(x))/n
+ return (m,c)
+def plot_regression_line(x, y, m, c):
+ plt.scatter(x, y, color = "m", marker = "o", s = 30)
+ y_pred = m*x+c
+ plt.plot(x, y_pred, color = "g")
+ plt.xlabel('x')
+ plt.ylabel('y')
+ plt.show()
+if __name__ == "__main__":
+ x = np.array([3,9,7,5,2,15,2,10,4,11,12,9,6])
+ y = np.array([99,89,87,88,108,86,110,87,94,78,70,93,86])
+ m, c = estimate_coef(x, y)
+ print(f"Estimated coefficients: Slope and Intercept {m}, {c}")
+ plot_regression_line(x, y, m, c)
